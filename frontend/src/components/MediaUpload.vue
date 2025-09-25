@@ -10,7 +10,8 @@
       <button type="button" 
               class="btn btn-link text-muted p-1 me-2"
               @click="$refs.photoInput.click()"
-              :disabled="disabled || hasMedia">
+              :disabled="disabled || hasMedia"
+              title="Upload image (max 10MB)">
         <i class="bi bi-image"></i> Photo
       </button>
       
@@ -22,9 +23,12 @@
       <button type="button" 
               class="btn btn-link text-muted p-1"
               @click="$refs.videoInput.click()"
-              :disabled="disabled || hasMedia">
+              :disabled="disabled || hasMedia"
+              title="Upload video (max 200MB)">
         <i class="bi bi-camera-video"></i> Video
       </button>
+      
+      <small class="text-muted ms-2">Max: 10MB images, 200MB videos</small>
     </div>
 
     <!-- Upload Progress -->
@@ -77,7 +81,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useMediaStore } from '../stores/media'
 
 export default {
@@ -99,9 +103,10 @@ export default {
   emits: ['media-uploaded', 'media-removed'],
   setup(props, { emit }) {
     const mediaStore = useMediaStore()
+    const localUploadedMedia = ref(null)
 
     const uploadedMedia = computed(() => {
-      return mediaStore.uploadedFiles[mediaStore.uploadedFiles.length - 1] || null
+      return localUploadedMedia.value
     })
 
     const hasMedia = computed(() => {
@@ -122,6 +127,7 @@ export default {
 
       try {
         const uploadedFile = await mediaStore.uploadFile(file, type)
+        localUploadedMedia.value = uploadedFile
         emit('media-uploaded', uploadedFile)
         
         // Clear the input value so the same file can be selected again
@@ -133,10 +139,15 @@ export default {
     }
 
     const removeMedia = () => {
-      if (uploadedMedia.value) {
-        mediaStore.removeFile(uploadedMedia.value.id)
+      if (localUploadedMedia.value) {
+        mediaStore.removeFile(localUploadedMedia.value.id)
+        localUploadedMedia.value = null
         emit('media-removed')
       }
+    }
+
+    const clearMedia = () => {
+      localUploadedMedia.value = null
     }
 
     return {
@@ -144,6 +155,7 @@ export default {
       uploadedMedia,
       hasMedia,
       previewStyle,
+      clearMedia,
       handleFileUpload,
       removeMedia
     }

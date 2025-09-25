@@ -10,6 +10,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Mobile-specific improvements */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Prevent horizontal scrolling */
+  overflow-x: hidden;
+  /* Improve touch scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .gradient-background {
@@ -142,4 +150,134 @@ body {
   border-radius: 10px;
   border: none;
   margin-bottom: 20px;
+}
+
+/* Mobile Responsive Utility Classes */
+
+/* Safe area insets for devices with notches */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 767.98px) {
+  /* Prevent zoom on input focus for iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  /* Improve button touch targets */
+  .btn {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+  }
+  
+  .btn-sm {
+    min-height: 36px;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Card improvements */
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Form improvements */
+  .form-control {
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 16px;
+  }
+  
+  /* Modal improvements */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  /* Dropdown improvements */
+  .dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* iPhone specific improvements */
+@media only screen and (max-width: 430px) {
+  /* Improve spacing for smaller screens */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Adjust typography */
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1rem; }
+  h6 { font-size: 0.9rem; }
+  
+  /* Button improvements */
+  .btn-group .btn {
+    flex: 1;
+  }
+}
+
+/* Touch device improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects that don't work on touch */
+  .card:hover {
+    transform: none !important;
+  }
+  
+  /* Improve button feedback */
+  .btn:active {
+    transform: scale(0.98);
+  }
+  
+  /* Improve link touch targets */
+  a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Prevent text selection on UI elements */
+@media (max-width: 767.98px) {
+  .btn, .nav-link, .dropdown-toggle {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+
+/* High DPI display improvements */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  /* Improve rendering for high DPI screens */
+  .brand-icon, .avatar-circle {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }

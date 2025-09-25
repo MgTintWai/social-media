@@ -29,10 +29,10 @@ export const useMediaStore = defineStore('media', {
         }
 
         // Validate file size
-        const maxSize = type === 'video' ? 50 * 1024 * 1024 : 10 * 1024 * 1024 // 50MB for video, 10MB for images
+        const maxSize = type === 'video' ? 200 * 1024 * 1024 : 10 * 1024 * 1024 // 200MB for video, 10MB for images
         if (file.size > maxSize) {
-          const sizeLimit = type === 'video' ? '50MB' : '10MB'
-          throw new Error(`File is too large. Maximum size is ${sizeLimit}`)
+          const sizeLimit = type === 'video' ? '200MB' : '10MB'
+          throw new Error(`File is too large. Maximum size is ${sizeLimit}. Your file is ${this.formatFileSize(file.size)}.`)
         }
 
         // Create file preview
@@ -77,6 +77,11 @@ export const useMediaStore = defineStore('media', {
     },
 
     clearError() {
+      this.error = null
+    },
+
+    clearAllFiles() {
+      this.uploadedFiles = []
       this.error = null
     },
 

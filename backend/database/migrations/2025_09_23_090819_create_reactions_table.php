@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->string('type')->default('like'); // like, love, laugh, etc.
             $table->timestamps();
+            
+            // Prevent duplicate reactions from same user on same post
+            $table->unique(['user_id', 'post_id']);
         });
     }
 
